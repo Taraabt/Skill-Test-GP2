@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,9 +7,10 @@ public class Player : PlayerInput
 
     [SerializeField]float speed;
     [SerializeField]float sensitivity = 1;
-    [SerializeField] Gun gun;
-    [SerializeField] Transform muzle;
+    [SerializeField]List<GameObject> gun = new List<GameObject>();
+    [SerializeField] int hp;
 
+    int gunIndex;
     Rigidbody rb;
     Vector2 move;
     float rotationX = 0f;
@@ -28,12 +30,64 @@ public class Player : PlayerInput
 
     protected override void CancelMove(InputAction.CallbackContext value)
     {
+        //UIManager.Health?.Invoke(hp);
         move = Vector2.zero;
     }
+    protected override void SecondWeapon(InputAction.CallbackContext context)
+    {
 
+        gunIndex = 1;
+        for (int i = 0; i < gun.Count; i++)
+        {
+            if (i == gunIndex)
+            {
+                gun[i].SetActive(true);
+            }
+            else
+            {
+                gun[i].SetActive(false);
+            }
+        }
+    }
+
+    protected override void FirstWeapon(InputAction.CallbackContext context)
+    {
+        gunIndex = 0;
+        for (int i = 0; i < gun.Count; i++)
+        {
+            if (i == gunIndex)
+            {
+                gun[i].SetActive(true);
+            }
+            else
+            {
+                gun[i].SetActive(false);
+            }
+        }
+    }
+
+    protected override void ThirdWeapon(InputAction.CallbackContext context)
+    {
+        gunIndex = 2;
+        for (int i = 0; i < gun.Count; i++)
+        {
+            if (i == gunIndex)
+            {
+                gun[i].SetActive(true);
+            }
+            else
+            {
+                gun[i].SetActive(false);
+            }
+        }
+    }
     protected override void Shoot(InputAction.CallbackContext value)
     {
-        gun.Shoot(muzle);
+        gun[gunIndex].GetComponent<Gun>().Shoot();
+    }
+    protected override void StopShoot(InputAction.CallbackContext value)
+    {
+        gun[gunIndex].GetComponent<Gun>().WantShoot = false;
     }
 
     protected override void RotX(InputAction.CallbackContext value)

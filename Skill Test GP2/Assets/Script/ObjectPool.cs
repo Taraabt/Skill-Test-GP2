@@ -8,6 +8,7 @@ public class ObjectPool : MonoBehaviour
 
     [SerializeField] int amount;
     [SerializeField] GameObject pooledObjects;
+    [SerializeField] double maxDistance;
 
     private void Awake()
     {
@@ -30,7 +31,13 @@ public class ObjectPool : MonoBehaviour
         for(int i = 0;i < pooledObject.Count; i++)
         {
             if (!pooledObject[i].activeInHierarchy)
+            {
                 return pooledObject[i];
+            }
+            else if (pooledObject[i].transform.position.x>maxDistance|| pooledObject[i].transform.position.z > maxDistance)
+            {
+                pooledObject[i].SetActive(false);
+            }
         }
         return null;
     }

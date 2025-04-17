@@ -18,9 +18,12 @@ public class PlayerInput : MonoBehaviour
         inputActions.Gameplay.XAxis.performed += RotX;
         inputActions.Gameplay.YAxis.performed += RotY;
         inputActions.Gameplay.Shoot.performed += Shoot;
+        inputActions.Gameplay.Shoot.canceled += StopShoot;
         inputActions.Gameplay.Move.performed += Move;
         inputActions.Gameplay.Move.canceled += CancelMove;
-
+        inputActions.Gameplay.FirstWeapon.performed += FirstWeapon;
+        inputActions.Gameplay.SecondWeapon.performed += SecondWeapon;
+        inputActions.Gameplay.ThirdWeapon.performed += ThirdWeapon;
     }
 
     protected virtual void OnDisable()
@@ -29,11 +32,35 @@ public class PlayerInput : MonoBehaviour
         inputActions.Gameplay.XAxis.performed -= RotX;
         inputActions.Gameplay.YAxis.performed -= RotY;
         inputActions.Gameplay.Shoot.performed -= Shoot;
+        inputActions.Gameplay.Shoot.canceled -= StopShoot;
         inputActions.Gameplay.Move.performed -= Move;
         inputActions.Gameplay.Move.canceled -= CancelMove;
+        inputActions.Gameplay.FirstWeapon.performed -= FirstWeapon;
+        inputActions.Gameplay.SecondWeapon.performed -= SecondWeapon;
+        inputActions.Gameplay.ThirdWeapon.performed -= ThirdWeapon;
+    }
+
+    protected virtual void SecondWeapon(InputAction.CallbackContext context)
+    {
+
+    }
+
+    protected virtual void FirstWeapon(InputAction.CallbackContext context)
+    {
+
+    }
+
+    protected virtual void ThirdWeapon(InputAction.CallbackContext context)
+    {
+
     }
 
     protected virtual void Shoot(InputAction.CallbackContext value)
+    {
+
+    }
+
+    protected virtual void StopShoot(InputAction.CallbackContext context)
     {
 
     }

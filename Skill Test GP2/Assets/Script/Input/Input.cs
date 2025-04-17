@@ -62,6 +62,33 @@ public partial class @Input: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""First Weapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""cbd2b60d-2005-4c42-a98b-3dbbb262a736"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Second Weapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""0ab07d25-bf50-439e-853e-edb0718eb86d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Third Weapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""f6422c2c-fca2-438a-bfae-27004fdefb5f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -152,6 +179,39 @@ public partial class @Input: IInputActionCollection2, IDisposable
                     ""action"": ""Y Axis"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""823f77d4-0cd3-4476-bfaa-b6fc50204267"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""First Weapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""759901b1-5791-459c-bfcf-56e99056b5d6"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Second Weapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f9ee40b0-3e85-48f5-84f9-1b8d9446a482"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Third Weapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -164,6 +224,9 @@ public partial class @Input: IInputActionCollection2, IDisposable
         m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
         m_Gameplay_XAxis = m_Gameplay.FindAction("X Axis", throwIfNotFound: true);
         m_Gameplay_YAxis = m_Gameplay.FindAction("Y Axis", throwIfNotFound: true);
+        m_Gameplay_FirstWeapon = m_Gameplay.FindAction("First Weapon", throwIfNotFound: true);
+        m_Gameplay_SecondWeapon = m_Gameplay.FindAction("Second Weapon", throwIfNotFound: true);
+        m_Gameplay_ThirdWeapon = m_Gameplay.FindAction("Third Weapon", throwIfNotFound: true);
     }
 
     ~@Input()
@@ -234,6 +297,9 @@ public partial class @Input: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Move;
     private readonly InputAction m_Gameplay_XAxis;
     private readonly InputAction m_Gameplay_YAxis;
+    private readonly InputAction m_Gameplay_FirstWeapon;
+    private readonly InputAction m_Gameplay_SecondWeapon;
+    private readonly InputAction m_Gameplay_ThirdWeapon;
     public struct GameplayActions
     {
         private @Input m_Wrapper;
@@ -242,6 +308,9 @@ public partial class @Input: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Gameplay_Move;
         public InputAction @XAxis => m_Wrapper.m_Gameplay_XAxis;
         public InputAction @YAxis => m_Wrapper.m_Gameplay_YAxis;
+        public InputAction @FirstWeapon => m_Wrapper.m_Gameplay_FirstWeapon;
+        public InputAction @SecondWeapon => m_Wrapper.m_Gameplay_SecondWeapon;
+        public InputAction @ThirdWeapon => m_Wrapper.m_Gameplay_ThirdWeapon;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -263,6 +332,15 @@ public partial class @Input: IInputActionCollection2, IDisposable
             @YAxis.started += instance.OnYAxis;
             @YAxis.performed += instance.OnYAxis;
             @YAxis.canceled += instance.OnYAxis;
+            @FirstWeapon.started += instance.OnFirstWeapon;
+            @FirstWeapon.performed += instance.OnFirstWeapon;
+            @FirstWeapon.canceled += instance.OnFirstWeapon;
+            @SecondWeapon.started += instance.OnSecondWeapon;
+            @SecondWeapon.performed += instance.OnSecondWeapon;
+            @SecondWeapon.canceled += instance.OnSecondWeapon;
+            @ThirdWeapon.started += instance.OnThirdWeapon;
+            @ThirdWeapon.performed += instance.OnThirdWeapon;
+            @ThirdWeapon.canceled += instance.OnThirdWeapon;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -279,6 +357,15 @@ public partial class @Input: IInputActionCollection2, IDisposable
             @YAxis.started -= instance.OnYAxis;
             @YAxis.performed -= instance.OnYAxis;
             @YAxis.canceled -= instance.OnYAxis;
+            @FirstWeapon.started -= instance.OnFirstWeapon;
+            @FirstWeapon.performed -= instance.OnFirstWeapon;
+            @FirstWeapon.canceled -= instance.OnFirstWeapon;
+            @SecondWeapon.started -= instance.OnSecondWeapon;
+            @SecondWeapon.performed -= instance.OnSecondWeapon;
+            @SecondWeapon.canceled -= instance.OnSecondWeapon;
+            @ThirdWeapon.started -= instance.OnThirdWeapon;
+            @ThirdWeapon.performed -= instance.OnThirdWeapon;
+            @ThirdWeapon.canceled -= instance.OnThirdWeapon;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -302,5 +389,8 @@ public partial class @Input: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnXAxis(InputAction.CallbackContext context);
         void OnYAxis(InputAction.CallbackContext context);
+        void OnFirstWeapon(InputAction.CallbackContext context);
+        void OnSecondWeapon(InputAction.CallbackContext context);
+        void OnThirdWeapon(InputAction.CallbackContext context);
     }
 }
