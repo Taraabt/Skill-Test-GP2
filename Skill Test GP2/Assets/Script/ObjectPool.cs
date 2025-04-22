@@ -34,9 +34,10 @@ public class ObjectPool : MonoBehaviour
             {
                 return pooledObject[i];
             }
-            else if (pooledObject[i].transform.position.x>maxDistance|| pooledObject[i].transform.position.z > maxDistance)
+            else if (Vector3.Distance(Player.PlayerPos.position, pooledObject[i].transform.position)>maxDistance)
             {
                 pooledObject[i].SetActive(false);
+                i--;
             }
         }
         return null;

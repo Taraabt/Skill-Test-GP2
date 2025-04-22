@@ -65,7 +65,7 @@ public partial class @Input: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""First Weapon"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""cbd2b60d-2005-4c42-a98b-3dbbb262a736"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -74,7 +74,7 @@ public partial class @Input: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Second Weapon"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""0ab07d25-bf50-439e-853e-edb0718eb86d"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -83,12 +83,21 @@ public partial class @Input: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Third Weapon"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""f6422c2c-fca2-438a-bfae-27004fdefb5f"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""SwapWeapon"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""901321e6-d32b-4b18-99b4-f32dddee1f40"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -212,6 +221,17 @@ public partial class @Input: IInputActionCollection2, IDisposable
                     ""action"": ""Third Weapon"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5d92ffb3-219c-413b-a99c-46bb5a9ca8f8"",
+                    ""path"": ""<Mouse>/scroll"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwapWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -227,6 +247,7 @@ public partial class @Input: IInputActionCollection2, IDisposable
         m_Gameplay_FirstWeapon = m_Gameplay.FindAction("First Weapon", throwIfNotFound: true);
         m_Gameplay_SecondWeapon = m_Gameplay.FindAction("Second Weapon", throwIfNotFound: true);
         m_Gameplay_ThirdWeapon = m_Gameplay.FindAction("Third Weapon", throwIfNotFound: true);
+        m_Gameplay_SwapWeapon = m_Gameplay.FindAction("SwapWeapon", throwIfNotFound: true);
     }
 
     ~@Input()
@@ -300,6 +321,7 @@ public partial class @Input: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_FirstWeapon;
     private readonly InputAction m_Gameplay_SecondWeapon;
     private readonly InputAction m_Gameplay_ThirdWeapon;
+    private readonly InputAction m_Gameplay_SwapWeapon;
     public struct GameplayActions
     {
         private @Input m_Wrapper;
@@ -311,6 +333,7 @@ public partial class @Input: IInputActionCollection2, IDisposable
         public InputAction @FirstWeapon => m_Wrapper.m_Gameplay_FirstWeapon;
         public InputAction @SecondWeapon => m_Wrapper.m_Gameplay_SecondWeapon;
         public InputAction @ThirdWeapon => m_Wrapper.m_Gameplay_ThirdWeapon;
+        public InputAction @SwapWeapon => m_Wrapper.m_Gameplay_SwapWeapon;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -341,6 +364,9 @@ public partial class @Input: IInputActionCollection2, IDisposable
             @ThirdWeapon.started += instance.OnThirdWeapon;
             @ThirdWeapon.performed += instance.OnThirdWeapon;
             @ThirdWeapon.canceled += instance.OnThirdWeapon;
+            @SwapWeapon.started += instance.OnSwapWeapon;
+            @SwapWeapon.performed += instance.OnSwapWeapon;
+            @SwapWeapon.canceled += instance.OnSwapWeapon;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -366,6 +392,9 @@ public partial class @Input: IInputActionCollection2, IDisposable
             @ThirdWeapon.started -= instance.OnThirdWeapon;
             @ThirdWeapon.performed -= instance.OnThirdWeapon;
             @ThirdWeapon.canceled -= instance.OnThirdWeapon;
+            @SwapWeapon.started -= instance.OnSwapWeapon;
+            @SwapWeapon.performed -= instance.OnSwapWeapon;
+            @SwapWeapon.canceled -= instance.OnSwapWeapon;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -392,5 +421,6 @@ public partial class @Input: IInputActionCollection2, IDisposable
         void OnFirstWeapon(InputAction.CallbackContext context);
         void OnSecondWeapon(InputAction.CallbackContext context);
         void OnThirdWeapon(InputAction.CallbackContext context);
+        void OnSwapWeapon(InputAction.CallbackContext context);
     }
 }

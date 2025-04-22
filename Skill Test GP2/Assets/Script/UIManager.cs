@@ -1,25 +1,54 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    public static Action<int> Stamina;
+    public static Action<int> Score;
     public static Action<int> Health;
 
+    [SerializeField] Image staminaBar;
+    [SerializeField] Image healthBar;
+    [SerializeField]float stamina = 1000f;
+    [SerializeField]TMP_Text scoreText;
+    int score;
+    string str;
+
+    private void Awake()
+    {
+        str=scoreText.text;
+        UpdateScore(0);
+    }
 
     private void OnEnable()
     {
-        Health += WriteHealth;
+        Score += UpdateScore;
+        Stamina += UpdateStamina;
+        Health += UpdateHealth;
     }
 
     private void OnDisable()
     {
-        Health -= WriteHealth;
+        Score -= UpdateScore;
+        Stamina -= UpdateStamina;
+        Health -= UpdateHealth;
     }
 
-    private void WriteHealth(int obj)
+    private void UpdateHealth(int value)
     {
-        throw new NotImplementedException();
+        staminaBar.fillAmount = value / Player.Hp;
+    }
+    private void UpdateStamina(int value)
+    {
+        staminaBar.fillAmount = value / stamina;
+    }
+
+    private void UpdateScore(int value)
+    {
+        score=score+value;
+        scoreText.text = str+score.ToString();
     }
 
 }

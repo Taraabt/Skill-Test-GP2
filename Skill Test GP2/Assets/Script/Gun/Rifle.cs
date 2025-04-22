@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Rifle : Gun
@@ -7,7 +6,7 @@ public class Rifle : Gun
     public override void Shoot()
     {
         WantShoot = true;
-        if (!IsShooting)
+        if (!isShooting)
         {
             StartCoroutine(Shot(muzle));
         }
@@ -15,12 +14,12 @@ public class Rifle : Gun
 
     private void OnEnable()
     {
-        IsShooting = false;
+        isShooting = false;
     }
 
     IEnumerator Shot(Transform muzle)
     {
-        IsShooting = true;
+        isShooting = true;
         while (WantShoot)
         {
             GameObject bullet = ObjectPool.instance.GetPooledObject();
@@ -28,12 +27,13 @@ public class Rifle : Gun
             {
                 bullet.transform.position = muzle.position;
                 bullet.transform.rotation = muzle.rotation;
-                bullet.GetComponent<Bullet>().direction = muzle.transform.forward;
-                bullet.GetComponent<Bullet>().bulletSpeed = projectileSpeed;
+                bullet.GetComponent<Bullet>().Direction = muzle.transform.forward;
+                bullet.GetComponent<Bullet>().BulletSpeed = projectileSpeed;
+                bullet.GetComponent<Bullet>().Damage = damage;
                 bullet.SetActive(true);
             }
             yield return new WaitForSeconds(shootTimer);
         }
-        IsShooting = false;
+        isShooting = false;
     }
 }

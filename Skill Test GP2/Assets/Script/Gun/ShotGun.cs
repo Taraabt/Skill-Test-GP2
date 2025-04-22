@@ -1,43 +1,46 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ShotGun : Gun
 {
     int nBullet=4;
+    [SerializeField]Transform[] sgMuzle;
+
     public override void Shoot()
     {
         WantShoot = true;
-        if (!IsShooting)
+        if (!isShooting)
         {
-            StartCoroutine(Shot(muzle));
+            StartCoroutine(Shot(sgMuzle));
         }
     }
 
     private void OnEnable()
     {
-        IsShooting = false;
+        isShooting = false;
     }
 
-    IEnumerator Shot(Transform muzle)
+    IEnumerator Shot(Transform[] muzle)
     {
-        IsShooting = true;
+        isShooting = true;
         while (WantShoot)
         {
+            GameObject[] bullet= new GameObject[nBullet];
             for (int i=0;i<nBullet;i++)
             {
-                GameObject bullet = ObjectPool.instance.GetPooledObject();
-                if (bullet != null)
+                bullet[i]= ObjectPool.instance.GetPooledObject();
+                if (bullet[i] != null)
                 {
-                    bullet.transform.position = muzle.position;
-                    bullet.transform.rotation = muzle.rotation;
-                    bullet.GetComponent<Bullet>().direction = muzle.transform.forward;
-                    bullet.GetComponent<Bullet>().bulletSpeed = projectileSpeed;
-                    bullet.SetActive(true);
+                    bullet[i].transform.position = muzle[i].position;
+                    bullet[i].transform.rotation = muzle[i].rotation;
+                    bullet[i].GetComponent<Bullet>().Direction = muzle[i].transform.forward;
+                    bullet[i].GetComponent<Bullet>().BulletSpeed = projectileSpeed;
+                    bullet[i].GetComponent<Bullet>().Damage = damage;
+                    bullet[i].SetActive(true);
                 }
             }
             yield return new WaitForSeconds(shootTimer);
         }
-        IsShooting = false;
+        isShooting = false;
     }
 }

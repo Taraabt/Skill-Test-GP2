@@ -43,7 +43,7 @@
                 },
                 {
                     "name": "First Weapon",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "cbd2b60d-2005-4c42-a98b-3dbbb262a736",
                     "expectedControlType": "",
                     "processors": "",
@@ -52,7 +52,7 @@
                 },
                 {
                     "name": "Second Weapon",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "0ab07d25-bf50-439e-853e-edb0718eb86d",
                     "expectedControlType": "",
                     "processors": "",
@@ -61,12 +61,21 @@
                 },
                 {
                     "name": "Third Weapon",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "f6422c2c-fca2-438a-bfae-27004fdefb5f",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "SwapWeapon",
+                    "type": "PassThrough",
+                    "id": "901321e6-d32b-4b18-99b4-f32dddee1f40",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -188,6 +197,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Third Weapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5d92ffb3-219c-413b-a99c-46bb5a9ca8f8",
+                    "path": "<Mouse>/scroll",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwapWeapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

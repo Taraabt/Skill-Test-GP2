@@ -3,13 +3,14 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     Rigidbody rb;
-    public float bulletSpeed;
-    public Vector3 direction;
+    public float BulletSpeed;
+    public Vector3 Direction;
+    public int Damage;
 
     private void OnEnable()
     {
         rb = GetComponent<Rigidbody>();
-        rb.linearVelocity = direction.normalized * bulletSpeed;
+        rb.linearVelocity = Direction.normalized * BulletSpeed;
     }
 
     private void OnCollisionEnter(Collision collision)

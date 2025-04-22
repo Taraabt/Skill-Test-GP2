@@ -9,8 +9,9 @@ public class Pistol : Gun
         {
             bullet.transform.position = muzle.position;
             bullet.transform.rotation = muzle.rotation;
-            bullet.GetComponent<Bullet>().direction = muzle.transform.forward;
-            bullet.GetComponent<Bullet>().bulletSpeed = projectileSpeed;
+            bullet.GetComponent<Bullet>().Direction = muzle.transform.forward;
+            bullet.GetComponent<Bullet>().BulletSpeed = projectileSpeed;
+            bullet.GetComponent<Bullet>().Damage = damage;
             bullet.SetActive(true);
         }
     }

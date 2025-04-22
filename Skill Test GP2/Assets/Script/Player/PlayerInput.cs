@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,6 +5,7 @@ public class PlayerInput : MonoBehaviour
 {
 
     Input inputActions;
+
 
     protected virtual void Awake()
     {
@@ -24,6 +24,7 @@ public class PlayerInput : MonoBehaviour
         inputActions.Gameplay.FirstWeapon.performed += FirstWeapon;
         inputActions.Gameplay.SecondWeapon.performed += SecondWeapon;
         inputActions.Gameplay.ThirdWeapon.performed += ThirdWeapon;
+        inputActions.Gameplay.SwapWeapon.performed += Swap;
     }
 
     protected virtual void OnDisable()
@@ -38,13 +39,18 @@ public class PlayerInput : MonoBehaviour
         inputActions.Gameplay.FirstWeapon.performed -= FirstWeapon;
         inputActions.Gameplay.SecondWeapon.performed -= SecondWeapon;
         inputActions.Gameplay.ThirdWeapon.performed -= ThirdWeapon;
+        inputActions.Gameplay.SwapWeapon.performed -= Swap;
+    }
+
+    protected virtual void Swap(InputAction.CallbackContext context)
+    {
+
     }
 
     protected virtual void SecondWeapon(InputAction.CallbackContext context)
     {
 
     }
-
     protected virtual void FirstWeapon(InputAction.CallbackContext context)
     {
 
