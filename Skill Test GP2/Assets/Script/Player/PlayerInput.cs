@@ -1,20 +1,22 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerInput : MonoBehaviour
 {
 
-    Input inputActions;
-
+    protected Input inputActions;
 
     protected virtual void Awake()
     {
         inputActions = new Input();
     }
 
-    protected virtual void OnEnable()
+    protected void OnEnable()
     {
         inputActions.Enable();
+        inputActions.Gameplay.Interact.started += Interact;
+        inputActions.Gameplay.Interact.canceled += StopInteract;
         inputActions.Gameplay.XAxis.performed += RotX;
         inputActions.Gameplay.YAxis.performed += RotY;
         inputActions.Gameplay.Shoot.performed += Shoot;
@@ -27,9 +29,11 @@ public class PlayerInput : MonoBehaviour
         inputActions.Gameplay.SwapWeapon.performed += Swap;
     }
 
-    protected virtual void OnDisable()
+    protected void OnDisable()
     {
         inputActions.Disable();
+        inputActions.Gameplay.Interact.started -= Interact;
+        inputActions.Gameplay.Interact.canceled -= StopInteract;
         inputActions.Gameplay.XAxis.performed -= RotX;
         inputActions.Gameplay.YAxis.performed -= RotY;
         inputActions.Gameplay.Shoot.performed -= Shoot;
@@ -42,6 +46,16 @@ public class PlayerInput : MonoBehaviour
         inputActions.Gameplay.SwapWeapon.performed -= Swap;
     }
 
+
+    protected virtual void StopInteract(InputAction.CallbackContext context)
+    {
+
+    }
+
+    protected virtual void Interact(InputAction.CallbackContext context)
+    {
+
+    }
     protected virtual void Swap(InputAction.CallbackContext context)
     {
 

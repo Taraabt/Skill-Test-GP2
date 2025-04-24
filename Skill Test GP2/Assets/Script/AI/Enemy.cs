@@ -13,7 +13,7 @@ public class Enemy : MonoBehaviour, IDamageable
     public int Hp { get => hp; }
     [SerializeField] int hp;
     bool playerFound;
-
+    bool isDead = false;
     void Awake()
     {
         playerFound = false;
@@ -78,17 +78,18 @@ public class Enemy : MonoBehaviour, IDamageable
     public void TakeDamage(int amount)
     {
         hp = hp-amount;
-        if (hp <= 0)
+        if (hp <= 0&&!isDead)
         {
             IsDead();
+            isDead = true;
         }
     }
 
     public void IsDead()
     {
         Debug.Log("Dead");
-        UIManager.Score?.Invoke(points);
         Destroy(gameObject);
+        UIManager.Score?.Invoke(points);
     }
 
     public void Heal(int amount)

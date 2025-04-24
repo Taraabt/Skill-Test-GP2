@@ -1,32 +1,52 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player : PlayerInput,IDamageable
+public class Player : PlayerInput, IDamageable
 {
+
+    public static Action<int> heal;
 
     [SerializeField]float speed;
     [SerializeField]float sensitivity = 1;
     [SerializeField]List<GameObject> gun = new List<GameObject>();
     [SerializeField]int stamina;
+    [SerializeField]int hp;
     public static Transform PlayerPos { get=>playerPos;}
     private static Transform playerPos;
 
-    public static int Hp { get => hp; }
-    [SerializeField] static int hp;
+    public int Hp { get=> hp; }
+    public bool IsInteracting { get => isInteracting; }
 
     int currentStamina;
+    int currentHp;
     int gunIndex;
     Rigidbody rb;
     Vector2 move;
     float rotationX = 0f;
     float rotationY = 0f;
-    bool IsMoving;
+    bool isMoving;
+    bool isInteracting;
+
+    void OnEnable()
+    {
+        base.OnEnable();
+        heal += Heal;
+    }
+
+    void OnDisable()
+    {
+        base.OnDisable();
+        heal -= Heal;
+    }
 
     protected override void Awake()
     {
         base.Awake();
-        currentStamina=stamina;
+        inputActions.Gameplay.Enable();
+        currentHp = hp;
+        currentStamina =stamina;
         playerPos = transform;
         rb = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
@@ -35,7 +55,7 @@ public class Player : PlayerInput,IDamageable
     protected override void Move(InputAction.CallbackContext value)
     {
         move = value.ReadValue<Vector2>();
-        IsMoving = true;    
+        isMoving = true;    
     }
 
     protected override void Swap(InputAction.CallbackContext value)
@@ -69,11 +89,21 @@ public class Player : PlayerInput,IDamageable
         }
     }
 
+    protected override void Interact(InputAction.CallbackContext context)
+    {
+        isInteracting = true;
+    }
+
+    protected override void StopInteract(InputAction.CallbackContext context)
+    {
+        isInteracting= false;
+    }
+
     protected override void CancelMove(InputAction.CallbackContext value)
     {
         move = Vector2.zero;
         rb.linearVelocity = move;
-        IsMoving = false;
+        isMoving = false;
     }
 
     protected override void SecondWeapon(InputAction.CallbackContext context)
@@ -144,7 +174,7 @@ public class Player : PlayerInput,IDamageable
     private void FixedUpdate()
     {
         playerPos = transform;
-        if (!IsMoving){
+        if (!isMoving){
             if (currentStamina > stamina)
             {
                 currentStamina = stamina;
@@ -176,18 +206,36 @@ public class Player : PlayerInput,IDamageable
         rb.MoveRotation(Quaternion.Euler(rotationX, rotationY, 0));
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.GetComponent<Bullet>()!=null)
+        {
+            TakeDamage(collision.gameObject.GetComponent<Bullet>().Damage);
+        }
+    }
+
     public void TakeDamage(int amount)
     {
-        throw new System.NotImplementedException();
+        currentHp = currentHp - amount;
+        UIManager.Health?.Invoke(currentHp);
+        if (currentHp <= 0)
+        {
+            IsDead();
+        }
     }
 
     public void IsDead()
     {
-        throw new System.NotImplementedException();
+        inputActions.Gameplay.Disable();
     }
 
     public void Heal(int amount)
     {
-        throw new System.NotImplementedException();
+        currentHp = currentHp + amount;
+        if(currentHp>= hp) { 
+            currentHp=hp;
+        }
+        UIManager.Health?.Invoke(currentHp);
     }
+
 }

@@ -11,7 +11,8 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] Image staminaBar;
     [SerializeField] Image healthBar;
-    [SerializeField]float stamina = 1000f;
+    [SerializeField]float stamina = 1000;
+    [SerializeField]float hp = 10;
     [SerializeField]TMP_Text scoreText;
     int score;
     string str;
@@ -38,8 +39,9 @@ public class UIManager : MonoBehaviour
 
     private void UpdateHealth(int value)
     {
-        staminaBar.fillAmount = value / Player.Hp;
+        healthBar.fillAmount = value /hp;
     }
+
     private void UpdateStamina(int value)
     {
         staminaBar.fillAmount = value / stamina;
