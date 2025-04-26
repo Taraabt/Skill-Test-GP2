@@ -14,7 +14,7 @@ public class PlayerInput : MonoBehaviour
 
     protected void OnEnable()
     {
-        inputActions.Enable();
+        inputActions.Gameplay.Pause.started += Pause;
         inputActions.Gameplay.Interact.started += Interact;
         inputActions.Gameplay.Interact.canceled += StopInteract;
         inputActions.Gameplay.XAxis.performed += RotX;
@@ -31,7 +31,7 @@ public class PlayerInput : MonoBehaviour
 
     protected void OnDisable()
     {
-        inputActions.Disable();
+        inputActions.Gameplay.Pause.started -= Pause;
         inputActions.Gameplay.Interact.started -= Interact;
         inputActions.Gameplay.Interact.canceled -= StopInteract;
         inputActions.Gameplay.XAxis.performed -= RotX;
@@ -46,6 +46,10 @@ public class PlayerInput : MonoBehaviour
         inputActions.Gameplay.SwapWeapon.performed -= Swap;
     }
 
+    protected virtual void Pause(InputAction.CallbackContext context)
+    {
+
+    }
 
     protected virtual void StopInteract(InputAction.CallbackContext context)
     {

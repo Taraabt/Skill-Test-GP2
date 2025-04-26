@@ -2,7 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 
-public class Button : MonoBehaviour
+public class Door : MonoBehaviour
 {
 
     [SerializeField] TMP_Text scoreText;
@@ -33,11 +33,9 @@ public class Button : MonoBehaviour
     {
         if(other.GetComponent<Player>().IsInteracting)
         {
-            Debug.Log("open");
             StartCoroutine(Open());
         }
     }
-
 
     IEnumerator Open()
     {
@@ -47,4 +45,5 @@ public class Button : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         transform.GetComponent<Collider>().enabled = true;
     }
+
 }

@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[DefaultExecutionOrder(-1)]
 public class Player : PlayerInput, IDamageable
 {
 
     public static Action<int> heal;
+    public static Action activeInput;
+    public static Action deactiveInput;
 
     [SerializeField]float speed;
     [SerializeField]float sensitivity = 1;
@@ -32,24 +35,41 @@ public class Player : PlayerInput, IDamageable
     void OnEnable()
     {
         base.OnEnable();
+        activeInput += EnableInput;
+        deactiveInput += DisableInput;
         heal += Heal;
     }
 
     void OnDisable()
     {
         base.OnDisable();
+        deactiveInput -= DisableInput;
+        activeInput -= EnableInput;
         heal -= Heal;
+    }
+
+    private void DisableInput()
+    {
+        inputActions.Disable();
+    }
+
+    private void EnableInput()
+    {
+        inputActions.Enable();
     }
 
     protected override void Awake()
     {
         base.Awake();
-        inputActions.Gameplay.Enable();
+        Time.timeScale = 0f;
+        DisableInput();
+        inputActions.Disable();
+        inputActions.Gameplay.Disable();
+        Cursor.lockState = CursorLockMode.Confined;
         currentHp = hp;
         currentStamina =stamina;
         playerPos = transform;
         rb = GetComponent<Rigidbody>();
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     protected override void Move(InputAction.CallbackContext value)
@@ -159,6 +179,14 @@ public class Player : PlayerInput, IDamageable
     {
         gun[gunIndex].GetComponent<Gun>().Shoot();
     }
+
+
+
+    protected override void Pause(InputAction.CallbackContext value)
+    {
+        UIManager.Pause?.Invoke();
+    }
+
     protected override void StopShoot(InputAction.CallbackContext value)
     {
         gun[gunIndex].GetComponent<Gun>().WantShoot = false;
@@ -199,7 +227,6 @@ public class Player : PlayerInput, IDamageable
 
     protected override void RotY(InputAction.CallbackContext context)
     {
-
         float y = context.ReadValue<float>();
         rotationX -= y * sensitivity;
         rotationX = Mathf.Clamp(rotationX, -75, 75);
@@ -227,6 +254,9 @@ public class Player : PlayerInput, IDamageable
     public void IsDead()
     {
         inputActions.Gameplay.Disable();
+        Cursor.lockState = CursorLockMode.Confined;
+        UIManager.Lose?.Invoke();
+        Time.timeScale = 0;
     }
 
     public void Heal(int amount)

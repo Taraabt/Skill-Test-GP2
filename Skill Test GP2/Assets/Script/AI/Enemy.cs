@@ -87,7 +87,6 @@ public class Enemy : MonoBehaviour, IDamageable
 
     public void IsDead()
     {
-        Debug.Log("Dead");
         Destroy(gameObject);
         UIManager.Score?.Invoke(points);
     }
@@ -95,13 +94,6 @@ public class Enemy : MonoBehaviour, IDamageable
     public void Heal(int amount)
     {
 
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.black;
-        Gizmos.DrawRay(transform.position, Quaternion.Euler(0, fieldOfViewAngle, 0) * transform.forward * 3f);
-        Gizmos.DrawRay(transform.position, Quaternion.Euler(0, -fieldOfViewAngle , 0) * transform.forward * 3f);
     }
 
 }
